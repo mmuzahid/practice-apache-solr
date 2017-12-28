@@ -17,6 +17,7 @@ public class PracticeSolr {
 		SolrClient solr = new HttpSolrClient.Builder(urlString).build();
 		System.out.println("Update Document response: " + updateSampleDocument(solr));
 		System.out.println("Query Document response:" + querySampleDocument(solr));
+		System.out.println("Delete Document response:" + deleteSampleDocument(solr));
 	}
 
 	private static QueryResponse querySampleDocument(SolrClient solr)
@@ -40,4 +41,14 @@ public class PracticeSolr {
 		return updateResponse;
 	}
 
+	private static UpdateResponse deleteSampleDocument(SolrClient solr)
+			throws SolrServerException, IOException {
+		String searchKey = "id";
+		String searchValue = "55555";
+		String query = searchKey + ":" + searchValue;
+		UpdateResponse updateResponse = solr.deleteByQuery(query);
+		updateResponse = solr.commit();
+		return updateResponse;
+	}
+	
 }
