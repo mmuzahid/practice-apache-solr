@@ -1,0 +1,1 @@
+# practice-apache-solr
