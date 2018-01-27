@@ -18,6 +18,11 @@ public class PracticeSolr {
 		System.out.println("Update Document response: " + solrj.updateDocument(updateData));
 		System.out.println("Query Document response:" + solrj.queryDocument("id", "55555"));
 		System.out.println("Delete Document response:" + solrj.deleteDocument("id", "55555"));
+		
+		SolrRestExample solrRest = new SolrRestExmapleImp("http://localhost:8983/solr/my-practice-core");
+		System.out.println(solrRest.findDocuments("ts:1517081065042 OR id:11111"));
+		System.out.println(solrRest.updateDocuments(updateData.toString()));
+		System.out.println(solrRest.deleteDocuments("id:3a6d88e9-f1b7-44d8-9c69-e0431717fc03 OR id:11111"));
 	}
 
 }
