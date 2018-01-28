@@ -1,14 +1,10 @@
 package org.my.prac;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.Date;
 
 import javax.ws.rs.core.MediaType;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -24,63 +20,59 @@ public class SolrRestExmapleImp implements SolrRestExample {
 
 	@Override
 	public String findDocuments(String query) {
+		Client client = Client.create();
+		WebResource webResource;
 		try {
-			Client client = Client.create();
-			WebResource webResource;
 			query = URLEncoder.encode(query, "UTF-8");
-			webResource = client.resource(url + "/select?q=" + query);
-
-			System.out.println(webResource.getURI());
-			ClientResponse response = webResource.type(
-					MediaType.APPLICATION_JSON).get(ClientResponse.class);
-			Gson gson = new Gson();
-			return response.getEntity(String.class).toString();
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		return null;
+		webResource = client.resource(url + "/select?q=" + query);
+		System.out.println("findDocuments at "+ webResource.getURI());
+		ClientResponse response = webResource.type(MediaType.APPLICATION_JSON)
+				.get(ClientResponse.class);
+		return response.getEntity(String.class).toString();
 	}
 
 	@Override
-	public String updateDocuments(String query) {
-		try {
-			Client client = Client.create();
-			WebResource webResource;
-			webResource = client.resource(url + "/update/json/docs?commit=true");
-            JsonObject dataJson = new JsonObject();
-            JsonObject jsonProperty = new JsonObject();
-            jsonProperty.addProperty("value", query);
-            dataJson.add("metadata", jsonProperty);
-            dataJson.addProperty("ts", new Date().getTime());
-
-			System.out.println(dataJson);
-			ClientResponse response = webResource.type(
-					MediaType.APPLICATION_JSON).post(ClientResponse.class, dataJson.toString());
-			return response.getEntity(String.class).toString();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+	public String updateDocuments(String documentArray) {
+		return updateDocuments(documentArray, MediaType.APPLICATION_JSON);
 	}
 
 	@Override
-	public String deleteDocuments(String query) {
-		try {
-			Client client = Client.create();
-			WebResource webResource;
-			webResource = client.resource(url + "/update?commit=true");
-            JsonObject deleteJson = new JsonObject();
-            JsonObject deleteQuery = new JsonObject();
-            deleteQuery.addProperty("query", query);
-            deleteJson.add("delete", deleteQuery);
-			System.out.println(deleteJson);
-			ClientResponse response = webResource.type(
-					MediaType.APPLICATION_JSON).post(ClientResponse.class, deleteJson.toString());
-			return response.getEntity(String.class).toString();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+	public String updateDocuments(String jsonDocs,String contentType) {
+		Client client = Client.create();
+		WebResource webResource;
+		webResource = client.resource(url + "/update?commit=true");
+		System.out.println("updateDocuments at "+ webResource.getURI());
+		ClientResponse response = webResource.type(contentType).post(ClientResponse.class, jsonDocs);
+		return response.getEntity(String.class).toString();
+	}
+
+	@Override
+	public String updateJsonDocuments(String jsonDocs) {
+		Client client = Client.create();
+		WebResource webResource;
+		webResource = client.resource(url + "/update/json/docs?commit=true");
+		System.out.println("updateJsonDocuments at "+ webResource.getURI());
+		ClientResponse response = webResource.type(MediaType.APPLICATION_JSON).post(ClientResponse.class, jsonDocs);
+		return response.getEntity(String.class).toString();
+	}
+	
+	@Override
+	public String deleteDocuments(String solrQuery) {
+		Client client = Client.create();
+		WebResource webResource;
+		webResource = client.resource(url + "/update?commit=true");
+		JsonObject deleteJsonRequest = new JsonObject();
+		JsonObject deleteProperty = new JsonObject();
+		deleteProperty.addProperty("query", solrQuery);
+		deleteJsonRequest.add("delete", deleteProperty);
+		System.out.println("deleteDocuments at "+ webResource.getURI());
+		ClientResponse response = webResource.type(MediaType.APPLICATION_JSON)
+				.post(ClientResponse.class, deleteJsonRequest.toString());
+		return response.getEntity(String.class).toString();
+
 	}
 
 }
