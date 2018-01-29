@@ -23,8 +23,43 @@
     ``` 	
 
 > Installation Referrence: https://lucene.apache.org/solr/guide/6_6/running-solr.html 
-#### Solr with Java: ####
-1. Add **SolrJ** dependency in pom.xml
+
+#### Create Solr Core using comamnd ####
+To create a Solr **core** which will contain newly created **document** run following command:
+
+    ```
+    solr create -c my-practice-core
+    ```
+
+#### Solr with Jersey (REST Client): ####   
+Add **Jersey** dependences in **pom.xml**
+   	
+	```xml
+	 <dependency>
+		<groupId>com.sun.jersey</groupId>
+		<artifactId>jersey-core</artifactId>
+		<version>1.9.1</version>
+	</dependency>
+	<dependency>
+		<groupId>com.sun.jersey</groupId>
+		<artifactId>jersey-client</artifactId>
+		<version>1.9.1</version>
+	</dependency>
+	<dependency>
+		<groupId>com.sun.jersey</groupId>
+		<artifactId>jersey-server</artifactId>
+		<version>1.9.1</version>
+	</dependency>
+	<dependency>
+		<groupId>com.sun.jersey</groupId>
+		<artifactId>jersey-json</artifactId>
+		<version>1.9.1</version>
+	</dependency>   
+	```
+
+#### Solr with SolrJ (a Java Library): ####
+Add **SolrJ** dependency in **pom.xml**
+	
 	```xml
 	<dependency>
 	  <groupId>org.apache.solr</groupId>
@@ -32,11 +67,6 @@
 	  <version>7.1.0</version>
 	</dependency>	
 	```
-
-2. To create a Solr **core** which will contain newly created **document** run following command:
-    ```
-    solr create -c my-practice-core
-    ```
 
 > Referrence: 
     1. https://lucene.apache.org/solr/guide/6_6/using-solrj.html#UsingSolrJ-BuildingandRunningSolrJApplications
