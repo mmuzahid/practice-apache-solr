@@ -2,7 +2,7 @@
 
 #### Solr Setup on Windows: ####
 
-1. Confirm Java version as **1.8.0** or higher.
+1. Install Java **1.8.0** or higher and set environment variable **SOLR_JAVA_HOME** by the location of java 1.8.0.
 2. Download **zip** file (e.g. solr-7.1.0.zip) from **Solr** site. Sample download link http://www-eu.apache.org/dist/lucene/solr/7.1.0
 3. Extract downloaded **zip** file to any directory (e.g. solr directory D:\apache-soft\solr-7.1.0).
 4. Set extracted Solr location as **SOLR_HOME** environment variable (e.g. D:\apache-soft\solr-7.1.0)
